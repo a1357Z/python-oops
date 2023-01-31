@@ -45,6 +45,20 @@ class Item:
             print(f"creating item: {item}")
             Item(item.get("name"), float(item.get("price")), int(item.get("quantity")))
 
+    # create static method
+    # static methods don't get the object as first parameter by default
+    @staticmethod
+    def is_integer(num):
+        # we will count
+        if isinstance(num, float):
+            # return true for numbers like 10.00, 345.0 etc
+            return num.is_integer()
+        elif isinstance(num, int):
+            return True
+        else:
+            return False
+
+
 def printType(element):
     print(f"data type of: {element} = {type(element)}")
 
@@ -104,3 +118,7 @@ print(f"print all: {Item.instances}")
 # create items from csv
 Item.instantiate_from_csv()
 print(f"print all: {Item.instances}")
+
+# static methods
+print(Item.is_integer(7.0))  # true
+print(Item.is_integer(7.8))  # false
