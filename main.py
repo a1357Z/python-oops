@@ -1,10 +1,13 @@
+import csv
+
+
 class Item:
     # class attribute: attribute that belongs to class & can be accessed by every instance
     pay_rate = 0.8  # pay rate after 20% discount
     instances = []
     instanceMap = {}
 
-    def __init__(self, name: str, price: int, quantity: int = 0):
+    def __init__(self, name: str, price: float, quantity: int = 0):
         # Run validation on data
         # Can u be very useful for design by contract and assertive programming!
         assert type(name == str), f"{name} should be a string!"
@@ -30,10 +33,24 @@ class Item:
     def __repr__(self):
         return f"Item('{self.name}', {self.price}, {self.quantity})"
 
+    # We will use this to create instances from csv file.
+    # So this will be a class method.
+    @classmethod
+    def instantiate_from_csv(cls):
+        with open("items.csv", "r") as f:
+            reader = csv.DictReader(f)
+            items = list(reader)
+
+        for item in items:
+            print(f"creating item: {item}")
+            Item(item.get("name"), float(item.get("price")), int(item.get("quantity")))
 
 def printType(element):
     print(f"data type of: {element} = {type(element)}")
 
+
+"""
+session 1: code
 
 item1 = Item("phone", 500, 5)
 
@@ -65,6 +82,8 @@ item_3 = Item("Cable", 10, 5)
 item_4 = Item("Mouse", 50, 5)
 item_5 = Item("Keyboard", 75, 5)
 
+"""
+
 print(f"Count of Item instances: {len(Item.instances)}")
 print(f"Map of Item instances: {Item.instanceMap}")
 
@@ -80,4 +99,8 @@ for instance in Item.instances:
     print(instance.name)
 
 # print all
+print(f"print all: {Item.instances}")
+
+# create items from csv
+Item.instantiate_from_csv()
 print(f"print all: {Item.instances}")
