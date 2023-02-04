@@ -31,7 +31,7 @@ class Item:
         # always use self.pay_rate instead of Item.pay_rate for overriding issues
 
     def __repr__(self):
-        return f"Item('{self.name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
 
     # We will use this to create instances from csv file.
     # So this will be a class method.
@@ -122,3 +122,26 @@ print(f"print all: {Item.instances}")
 # static methods
 print(Item.is_integer(7.0))  # true
 print(Item.is_integer(7.8))  # false
+
+
+# inheritance
+
+class Phone(Item):
+    def __init__(self, name: str, price: float, quantity: int = 0, broken_phones: int = 0):
+        # call super
+        super().__init__(name, price, quantity)
+
+        # Run validation on data
+        # Can u be very useful for design by contract and assertive programming!
+        assert broken_phones >= 0, f"broken_phones should be a positive integer"
+        self.broken_phones = broken_phones
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity}, {self.broken_phones})"
+
+
+phone1 = Phone("blackBerry", 500, 5, 1)
+phone2 = Phone("blueBerry", 500, 5, 4)
+
+print(phone2)
+print(phone1.calculate_price())
